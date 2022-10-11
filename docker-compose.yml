@@ -21,10 +21,11 @@ services:
     image: docker.io/bitnami/laravel:9
     container_name: news-php
     ports:
+      - '5173:5173'
       - '8000:8000'
     environment:
       - DB_HOST=mysql
-      - DB_PORT=8006
+      - DB_PORT=3306
       - DB_USERNAME=newsmaker
       - DB_DATABASE=news
     volumes:

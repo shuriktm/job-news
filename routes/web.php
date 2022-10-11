@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
+});
+
+Auth::routes();
+
+Route::prefix('manager')->group(function () {
+    Route::get('/', [App\Http\Controllers\ManagerController::class, 'index'])
+        ->name('manager');
+
+    Route::resource('categories', CategoryController::class);
+    Route::resource('posts', PostController::class);
 });
