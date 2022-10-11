@@ -20,7 +20,10 @@ Route::get('/', function () {
     return view('home');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'verify' => false,
+]);
 
 Route::prefix('manager')->group(function () {
     Route::get('/', [App\Http\Controllers\ManagerController::class, 'index'])
