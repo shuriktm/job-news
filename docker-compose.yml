@@ -18,8 +18,10 @@ services:
       - 8006:3306
 
   laravel:
-    image: docker.io/bitnami/laravel:9
     container_name: news-php
+    build:
+        context: ./
+        dockerfile: docker/Dockerfile
     ports:
       - '5173:5173'
       - '8000:8000'
@@ -28,7 +30,13 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=newsmaker
       - DB_DATABASE=news
+      - BITNAMI_DEBUG=false
       - APP_TIMEZONE=Europe/Moscow
+      - NEWS_UPDATE_AUTO=false
+      - NEWS_BUILD_DEV=false
+      - NEWS_BUILD_AUTO=false
+      - NEWS_MIGRATE_AUTO=false
+      - NEWS_CACHE=false
     volumes:
       - './:/app'
     depends_on:
