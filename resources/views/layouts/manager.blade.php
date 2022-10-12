@@ -33,10 +33,15 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header">
-                        <div class="float-end">@yield('actions')</div>
-                        <div class="float-end me-3 p-0">@yield('filter')</div>
+                    <div class="card-header hstack gap-3">
                         <h4 class="py-1 mb-0">@yield('header')</h4>
+                        @hasSection('filter')
+                            <div class="ms-auto">@yield('filter')</div>
+                            <div class="vr"></div>
+                        @else
+                            <div class="ms-auto"></div>
+                        @endif
+                        <div class="hstack gap-1">@yield('actions')</div>
                     </div>
                     <div class="card-body">
                         @yield('body')

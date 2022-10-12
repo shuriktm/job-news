@@ -14,8 +14,16 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::options()
-            ->paginate(10)
+        $categories = Category::options();
+
+        if ($search = request()->input('search')) {
+            $categories->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%$search%")
+                    ->orWhere('slug', 'like', "%$search%");
+            });
+        }
+
+        $categories = $categories->paginate(10)
             ->withQueryString();
 
         return view('category.index', ['categories' => $categories]);
@@ -29,8 +37,16 @@ class CategoryController extends Controller
     public function archive()
     {
         $categories = Category::options()
-            ->onlyTrashed()
-            ->paginate(10)
+            ->onlyTrashed();
+
+        if ($search = request()->input('search')) {
+            $categories->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%$search%")
+                    ->orWhere('slug', 'like', "%$search%");
+            });
+        }
+
+        $categories = $categories->paginate(10)
             ->withQueryString();
 
         return view('category.archive', ['categories' => $categories]);

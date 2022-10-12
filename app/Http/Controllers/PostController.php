@@ -17,8 +17,14 @@ class PostController extends Controller
     {
         $posts = Post::manage();
 
-        if ($filter = request()->input('filter')) {
-            $posts->where('category_id', $filter);
+        if ($categoryId = request()->input('category')) {
+            $posts->where('category_id', $categoryId);
+        }
+        if ($search = request()->input('search')) {
+            $posts->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%$search%")
+                    ->orWhere('slug', 'like', "%$search%");
+            });
         }
 
         $posts = $posts->paginate(10)
@@ -32,7 +38,6 @@ class PostController extends Controller
         return view('post.index', [
             'posts' => $posts,
             'categories' => $categories,
-            'filter' => $filter,
         ]);
     }
 
@@ -46,8 +51,14 @@ class PostController extends Controller
         $posts = Post::manage()
             ->onlyTrashed();
 
-        if ($filter = request()->input('filter')) {
-            $posts->where('category_id', $filter);
+        if ($categoryId = request()->input('category')) {
+            $posts->where('category_id', $categoryId);
+        }
+        if ($search = request()->input('search')) {
+            $posts->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%$search%")
+                    ->orWhere('slug', 'like', "%$search%");
+            });
         }
 
         $posts = $posts->paginate(10)
@@ -63,7 +74,6 @@ class PostController extends Controller
         return view('post.archive', [
             'posts' => $posts,
             'categories' => $categories,
-            'filter' => $filter,
         ]);
     }
 
