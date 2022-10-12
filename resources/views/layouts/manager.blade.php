@@ -35,6 +35,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-end">@yield('actions')</div>
+                        <div class="float-end me-3 p-0">@yield('filter')</div>
                         <h4 class="py-1 mb-0">@yield('header')</h4>
                     </div>
                     <div class="card-body">

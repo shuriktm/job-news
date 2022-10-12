@@ -1,49 +1,43 @@
 @extends('layouts.manager')
 
 @section('breadcrumbs')
-    <li class="breadcrumb-item active" aria-current="page">{{ __('Posts') }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('Categories') }}</li>
 @endsection
 
 @section('header')
-    {{ __('Posts') }}
+    {{ __('Categories') }}
 @endsection
 
 @section('actions')
-    <a class="btn btn-primary py-1 px-3" href="{{ route('posts.create')  }}">{{ __('Create') }}</a>
-    <a class="btn btn-default py-1 px-3" href="{{ route('posts.archive')  }}">{{ __('Archive') }}</a>
-@endsection
-
-@section('filter')
-    @include('post.filter')
+    <a class="btn btn-primary py-1 px-3" href="{{ route('categories.create')  }}">{{ __('Create') }}</a>
+    <a class="btn btn-default py-1 px-3" href="{{ route('categories.archive')  }}">{{ __('Archive') }}</a>
 @endsection
 
 @section('body')
-    <x-table :rows="$posts">
+    <x-table :rows="$categories">
         <x-slot:head>
             <th scope="col">{{ __('#') }}</th>
             <th scope="col"></th>
             <th scope="col">{{ __('Title') }}</th>
             <th scope="col">{{ __('Slug') }}</th>
-            <th scope="col">{{ __('Publish At') }}</th>
             <th scope="col"></th>
         </x-slot>
         <x-slot:body>
-            @foreach ($posts as $index => $post)
+            @foreach ($categories as $index => $category)
                 <tr>
                     <th scope="row">{{ $index + 1 }}</th>
                     <td>
-                        <a class="btn btn-link text-primary p-0" href="{{ route('posts.edit', $post) }}" title="{{ __('Edit') }}">
+                        <a class="btn btn-link text-primary p-0" href="{{ route('categories.edit', $category) }}" title="{{ __('Edit') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                             </svg>
                         </a>
                     </td>
-                    <td>{{ $post->title }}</td>
-                    <td>{{ $post->slug }}</td>
-                    <td>{{ Date::parse($post->publish_at)->toDateTimeString() }}</td>
+                    <td>{{ $category->title }}</td>
+                    <td>{{ $category->slug }}</td>
                     <td>
-                        <form method="POST" action="{{ route('posts.destroy', $post) }}">
+                        <form method="POST" action="{{ route('categories.destroy', $category) }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-link text-danger p-0" title="{{ __('Delete') }}">

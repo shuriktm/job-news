@@ -25,7 +25,7 @@ class Field extends Component
      *
      * @return void
      */
-    public function __construct($name, $label)
+    public function __construct($name, $label = null)
     {
         $this->name = $name;
         $this->label = $label;

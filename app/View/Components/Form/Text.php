@@ -17,7 +17,7 @@ class Text extends Field
      *
      * @return void
      */
-    public function __construct($name, $label, $default = null)
+    public function __construct($name, $label = null, $default = null)
     {
         parent::__construct($name, $label);
 

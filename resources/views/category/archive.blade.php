@@ -1,7 +1,7 @@
 @extends('layouts.manager')
 
 @section('breadcrumbs')
-    <li class="breadcrumb-item"><a href="{{ route('posts.index') }}">{{ __('Posts') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">{{ __('Categories') }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ __('Archives') }}</li>
 @endsection
 
@@ -10,31 +10,25 @@
 @endsection
 
 @section('actions')
-    <a class="btn btn-secondary py-1 px-3" href="{{ route('posts.index')  }}">{{ __('Back') }}</a>
-@endsection
-
-@section('filter')
-    @include('post.filter')
+    <a class="btn btn-secondary py-1 px-3" href="{{ route('categories.index')  }}">{{ __('Back') }}</a>
 @endsection
 
 @section('body')
-    <x-table :rows="$posts">
+    <x-table :rows="$categories">
         <x-slot:head>
             <th scope="col">{{ __('#') }}</th>
             <th scope="col">{{ __('Title') }}</th>
             <th scope="col">{{ __('Slug') }}</th>
-            <th scope="col">{{ __('Publish At') }}</th>
             <th scope="col"></th>
         </x-slot>
         <x-slot:body>
-            @foreach ($posts as $index => $post)
+            @foreach ($categories as $index => $category)
                 <tr>
                     <th scope="row">{{ $index + 1 }}</th>
-                    <td>{{ $post->title }}</td>
-                    <td>{{ $post->slug }}</td>
-                    <td>{{ Date::parse($post->publish_at)->toDateTimeString() }}</td>
+                    <td>{{ $category->title }}</td>
+                    <td>{{ $category->slug }}</td>
                     <td>
-                        <form method="POST" action="{{ route('posts.restore', $post) }}">
+                        <form method="POST" action="{{ route('categories.restore', $category) }}">
                             @csrf
                             @method('POST')
                             <button type="submit" class="btn btn-link text-success p-0" title="{{ __('Restore') }}">

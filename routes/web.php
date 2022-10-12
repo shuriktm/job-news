@@ -30,6 +30,10 @@ Route::middleware(['auth'])
         Route::get('/', [App\Http\Controllers\ManagerController::class, 'index'])
             ->name('manager');
 
+        Route::get('/categories/archive', [CategoryController::class, 'archive'])
+            ->name('categories.archive');
+        Route::post('/categories/restore/{id}', [CategoryController::class, 'restore'])
+            ->name('categories.restore');
         Route::resource('categories', CategoryController::class)->except([
             'show',
         ]);

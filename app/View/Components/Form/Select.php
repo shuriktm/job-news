@@ -23,7 +23,7 @@ class Select extends Field
      *
      * @return void
      */
-    public function __construct($name, $label, $options, $default = null)
+    public function __construct($name, $options, $label = null, $default = null)
     {
         parent::__construct($name, $label);
 

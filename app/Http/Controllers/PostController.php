@@ -15,10 +15,23 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::manage()
-            ->paginate(10);
+        $posts = Post::manage();
 
-        return view('post.index', ['posts' => $posts]);
+        if ($filter = request()->input('filter')) {
+            $posts->where('category_id', $filter);
+        }
+
+        $posts = $posts->paginate(10)
+            ->withQueryString();
+
+        $categories = Category::options()->get()
+            ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
+
+        return view('post.index', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'filter' => $filter,
+        ]);
     }
 
     /**
@@ -29,10 +42,23 @@ class PostController extends Controller
     public function archive()
     {
         $posts = Post::manage()
-            ->onlyTrashed()
-            ->paginate(10);
+            ->onlyTrashed();
 
-        return view('post.archive', ['posts' => $posts]);
+        if ($filter = request()->input('filter')) {
+            $posts->where('category_id', $filter);
+        }
+
+        $posts = $posts->paginate(10)
+            ->withQueryString();
+
+        $categories = Category::options()->get()
+            ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
+
+        return view('post.archive', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'filter' => $filter,
+        ]);
     }
 
     /**
@@ -45,14 +71,14 @@ class PostController extends Controller
         $categories = Category::options()->get()
             ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
 
-        return view('post.create', ['categories' => $categories, 'post' => null]);
+        return view('post.create', ['categories' => $categories]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\PostRequest  $request
-     * @return \Illuminate\Http\RedirectResponse|void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(PostRequest $request)
     {

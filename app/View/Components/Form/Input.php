@@ -23,7 +23,7 @@ class Input extends Field
      *
      * @return void
      */
-    public function __construct($name, $label, $default = null, $type = 'text')
+    public function __construct($name, $label = null, $default = null, $type = 'text')
     {
         parent::__construct($name, $label);
 

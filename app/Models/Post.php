@@ -55,9 +55,9 @@ class Post extends Model
      */
     public function scopeManage(Builder $query)
     {
-        return $query->with('category')
-            ->whereNotNull('publish_at')
-            ->orderByDesc('publish_at');
+        return $query->withWhereHas('category', function ($query) {
+            $query->whereNull('deleted_at');
+        })->orderByDesc('publish_at');
     }
 
     /**
@@ -68,10 +68,8 @@ class Post extends Model
      */
     public function scopePublished(Builder $query)
     {
-        return $query->with('category')
-            ->whereNotNull('publish_at')
+        return $this->scopeManage($query)
             ->whereDate('publish_at', '<=', $now = now())
-            ->whereTime('publish_at', '<=', $now)
-            ->orderByDesc('publish_at');
+            ->whereTime('publish_at', '<=', $now);
     }
 }
