@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Show all the news.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -18,16 +18,18 @@ class HomeController extends Controller
         $posts = Post::published()
             ->paginate(10);
 
-        $categories = Category::options()->get();
+        $categories = Category::published()->get();
 
-        return view('home', [
+        return view('feed', [
             'posts' => $posts,
-            'categories' => $categories,
+            'categories' => $categories->take(20),
+            'more' => $categories->skip(20),
+            'title' => __('All'),
         ]);
     }
 
     /**
-     * Show the application dashboard.
+     * Show news for the specified category.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -37,12 +39,30 @@ class HomeController extends Controller
             ->published()
             ->paginate(10);
 
-        $categories = Category::options()->get();
+        $categories = Category::published()->get();
 
-        return view('home', [
+        return view('feed', [
             'posts' => $posts,
-            'categories' => $categories,
-            'header' => $category->title,
+            'categories' => $categories->take(20),
+            'more' => $categories->skip(20),
+            'title' => $category->title,
+        ]);
+    }
+
+    /**
+     * Show the post content.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function post(Request $request, Category $category, Post $post)
+    {
+        $categories = Category::published()->get();
+
+        return view('post', [
+            'category' => $category,
+            'post' => $post,
+            'categories' => $categories->take(20),
+            'more' => $categories->skip(20),
         ]);
     }
 }

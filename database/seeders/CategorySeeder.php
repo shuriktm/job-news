@@ -17,14 +17,6 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        Category::factory()->create([
-            'title' => 'Electronic',
-        ]);
-        Category::factory()->create([
-            'title' => 'Auto',
-        ]);
-        Category::factory()->create([
-            'title' => 'Science',
-        ]);
+        Category::factory(75)->create();
     }
 }

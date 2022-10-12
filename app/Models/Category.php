@@ -46,4 +46,19 @@ class Category extends Model
     {
         return $query->orderBy('title');
     }
+
+    /**
+     * Categories with posts.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopePublished(Builder $query)
+    {
+        return $query->withWhereHas('posts', function ($query) {
+            $query->whereNull('deleted_at')
+                ->whereDate('publish_at', '<=', $now = now())
+                ->whereTime('publish_at', '<=', $now);
+        })->orderBy('title');
+    }
 }

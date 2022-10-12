@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])
     ->name('home');
-Route::get('/category/{category:slug}', [App\Http\Controllers\HomeController::class, 'category'])
+Route::get('/news/{category:slug}', [App\Http\Controllers\HomeController::class, 'category'])
     ->name('home.category');
-Route::get('/category/{category:slug}/{post:slug}', [App\Http\Controllers\HomeController::class, 'post'])
+Route::get('/news/{category:slug}/{post:slug}', [App\Http\Controllers\HomeController::class, 'post'])
     ->name('home.post');
 
 Auth::routes([

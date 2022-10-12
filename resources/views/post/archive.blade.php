@@ -23,6 +23,7 @@
             <th scope="col">{{ __('#') }}</th>
             <th scope="col">{{ __('Title') }}</th>
             <th scope="col">{{ __('Slug') }}</th>
+            <th scope="col">{{ __('Category') }}</th>
             <th scope="col">{{ __('Publish At') }}</th>
             <th scope="col"></th>
         </x-slot>
@@ -32,6 +33,7 @@
                     <th scope="row">{{ $index + 1 }}</th>
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->slug }}</td>
+                    <td>{{ $post->category->title }}</td>
                     <td>{{ Date::parse($post->publish_at)->toDateTimeString() }}</td>
                     <td>
                         <form method="POST" action="{{ route('posts.restore', $post) }}">

@@ -24,7 +24,9 @@ class PostController extends Controller
         $posts = $posts->paginate(10)
             ->withQueryString();
 
-        $categories = Category::options()->get()
+        $categories = Category::options()
+            ->withWhereHas('posts')
+            ->get()
             ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
 
         return view('post.index', [
@@ -51,7 +53,11 @@ class PostController extends Controller
         $posts = $posts->paginate(10)
             ->withQueryString();
 
-        $categories = Category::options()->get()
+        $categories = Category::options()
+            ->withWhereHas('posts', function ($query) {
+                $query->onlyTrashed();
+            })
+            ->get()
             ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
 
         return view('post.archive', [

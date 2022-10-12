@@ -20,8 +20,8 @@ class PostFactory extends Factory
         return [
             'title' => Str::title($title = fake()->name()),
             'slug' => Str::slug($title),
-            'content' => fake()->text(500),
-            'publish_at' => now()->addMinutes(rand(0, 200)),
+            'content' => fake()->text(rand(700, 2000)),
+            'publish_at' => now()->addMinutes(rand(-60, 200)),
         ];
     }
 }
