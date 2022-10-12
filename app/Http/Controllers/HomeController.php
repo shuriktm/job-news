@@ -15,12 +15,12 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::published()
+        $posts = Post::public()
             ->paginate(10);
 
-        $categories = Category::published()->get();
+        $categories = Category::public()->get();
 
-        return view('feed', [
+        return view('home.feed', [
             'posts' => $posts,
             'categories' => $categories->take(20),
             'more' => $categories->skip(20),
@@ -36,12 +36,12 @@ class HomeController extends Controller
     public function category(Request $request, Category $category)
     {
         $posts = $category->posts()
-            ->published()
+            ->public()
             ->paginate(10);
 
-        $categories = Category::published()->get();
+        $categories = Category::public()->get();
 
-        return view('feed', [
+        return view('home.feed', [
             'posts' => $posts,
             'categories' => $categories->take(20),
             'more' => $categories->skip(20),
@@ -56,9 +56,9 @@ class HomeController extends Controller
      */
     public function post(Request $request, Category $category, Post $post)
     {
-        $categories = Category::published()->get();
+        $categories = Category::public()->get();
 
-        return view('post', [
+        return view('home.post', [
             'category' => $category,
             'post' => $post,
             'categories' => $categories->take(20),

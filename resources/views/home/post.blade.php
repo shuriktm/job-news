@@ -12,7 +12,8 @@
                 </h6>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('home.category', $category) }}">{{ $category->title }}</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('home.category', $category) }}">{{ $category->title }}</a></li>
                     </ol>
                 </nav>
                 <div class="mt-3">
@@ -20,7 +21,7 @@
                 </div>
             </div>
             <div class="col-3">
-                @include('feed.categories')
+                @include('home.categories')
             </div>
         </div>
     </div>

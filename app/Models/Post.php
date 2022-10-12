@@ -66,7 +66,7 @@ class Post extends Model
      * @param  Builder  $query
      * @return Builder
      */
-    public function scopePublished(Builder $query)
+    public function scopePublic(Builder $query)
     {
         return $this->scopeManage($query)
             ->whereDate('publish_at', '<=', $now = now())

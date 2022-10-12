@@ -21,7 +21,7 @@
                 {{ $posts->onEachSide(1)->links() }}
             </div>
             <div class="col-3">
-                @include('feed.categories')
+                @include('home.categories')
             </div>
         </div>
     </div>

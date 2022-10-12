@@ -18,10 +18,11 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->text('content');
             $table->foreignIdFor(Category::class)->constrained();
-            $table->timestamp('publish_at')->nullable();
+            $table->timestamp('publish_at')->nullable()
+                ->index('publish_at');
             $table->timestamps();
             $table->softDeletes();
         });
