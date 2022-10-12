@@ -19,10 +19,10 @@ class ManagerController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function index()
     {
-        return view('manager');
+        return redirect()->route('posts.index');
     }
 }

@@ -14,36 +14,30 @@ class Post extends Model
     use SoftDeletes;
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * @inheritdoc
      */
-    protected $casts = [
-        'public_at' => 'timestamp',
+    protected $fillable = [
+        'category_id',
+        'content',
+        'publish_at',
+        'slug',
+        'title',
     ];
 
     /**
-     * Visible posts only.
-     *
-     * @param  Builder  $query
-     * @return Builder
+     * @inheritdoc
      */
-    public function scopeVisible(Builder $query)
-    {
-        return $query->has('category')
-            ->with('category')
-            ->whereNotNull('public_at')
-            ->whereDate('public_at', '<=', $now = now())
-            ->whereTime('public_at', '<=', $now);
-    }
+    protected $casts = [
+        'publish_at' => 'datetime',
+    ];
 
     /**
-     * @return BelongsTo
+     * @inheritdoc
      */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $dates = [
+        'publish_at',
+        'deleted_at',
+    ];
 
     /**
      * @return BelongsTo
@@ -51,5 +45,33 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Posts to manage in admin.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeManage(Builder $query)
+    {
+        return $query->with('category')
+            ->whereNotNull('publish_at')
+            ->orderByDesc('publish_at');
+    }
+
+    /**
+     * Published posts only.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopePublished(Builder $query)
+    {
+        return $query->with('category')
+            ->whereNotNull('publish_at')
+            ->whereDate('publish_at', '<=', $now = now())
+            ->whereTime('publish_at', '<=', $now)
+            ->orderByDesc('publish_at');
     }
 }

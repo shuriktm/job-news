@@ -7,9 +7,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'News') }}</title>
+    <title>{{ config('app.name', 'Test News') }}</title>
 
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,10 +20,10 @@
 </head>
 <body>
 <div class="container" id="app">
-    <nav class="navbar navbar-expand-md navbar-light shadow rounded mt-4 border">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow rounded mt-4 px-3 border">
         <div class="container">
-            <a class="navbar-brand mb-0 px-3 h3" href="{{ url('/') }}">
-                {{ config('app.name', 'News') }}
+            <a class="navbar-brand me-5" href="{{ route('home') }}">
+                {{ config('app.name', 'Test News') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
@@ -55,13 +55,12 @@
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 @sectionMissing('menu')
                                     <a class="dropdown-item" href="{{ route('manager') }}">
-                                        {{ __('Dashboard') }}
+                                        {{ __('Manager') }}
                                     </a>
                                 @endif
 
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 
@@ -76,7 +75,7 @@
         </div>
     </nav>
 
-    <main class="py-4 mt-5">
+    <main class="py-4 mt-4">
         @yield('content')
     </main>
 </div>

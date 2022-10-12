@@ -28,6 +28,7 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=newsmaker
       - DB_DATABASE=news
+      - APP_TIMEZONE=Europe/Moscow
     volumes:
       - './:/app'
     depends_on:

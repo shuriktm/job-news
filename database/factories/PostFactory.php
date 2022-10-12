@@ -21,7 +21,7 @@ class PostFactory extends Factory
             'title' => Str::title($title = fake()->name()),
             'slug' => Str::slug($title),
             'content' => fake()->text(500),
-            'public_at' => now()->addMinutes(rand(0, 200)),
+            'publish_at' => now()->addMinutes(rand(0, 200)),
         ];
     }
 }

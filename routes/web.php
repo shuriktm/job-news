@@ -18,17 +18,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Auth::routes([
     'register' => false,
     'verify' => false,
 ]);
 
-Route::prefix('manager')->group(function () {
-    Route::get('/', [App\Http\Controllers\ManagerController::class, 'index'])
-        ->name('manager');
+Route::middleware(['auth'])
+    ->prefix('manager')->group(function () {
+        Route::get('/', [App\Http\Controllers\ManagerController::class, 'index'])
+            ->name('manager');
 
-    Route::resource('categories', CategoryController::class);
-    Route::resource('posts', PostController::class);
-});
+        Route::resource('categories', CategoryController::class)->except([
+            'show',
+        ]);
+
+        Route::get('/posts/archive', [PostController::class, 'archive'])
+            ->name('posts.archive');
+        Route::post('/posts/restore/{id}', [PostController::class, 'restore'])
+            ->name('posts.restore');
+        Route::resource('posts', PostController::class)->except([
+            'show',
+        ]);
+    });

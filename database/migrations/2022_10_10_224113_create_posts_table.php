@@ -17,12 +17,11 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
             $table->string('title');
             $table->string('slug');
             $table->text('content');
-            $table->foreignIdFor(Category::class);
-            $table->timestamp('public_at')->nullable();
+            $table->foreignIdFor(Category::class)->constrained();
+            $table->timestamp('publish_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
