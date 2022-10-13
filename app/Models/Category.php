@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\CategoryCollection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,14 @@ class Category extends Model
     ];
 
     /**
+     * @inheritdoc
+     */
+    public function newCollection(array $models = [])
+    {
+        return new CategoryCollection($models);
+    }
+
+    /**
      * @return HasMany
      */
     public function posts()
@@ -37,12 +46,12 @@ class Category extends Model
     }
 
     /**
-     * Categories as options.
+     * Categories to manage in admin.
      *
      * @param  Builder  $query
      * @return Builder
      */
-    public function scopeOptions(Builder $query)
+    public function scopeManage(Builder $query)
     {
         return $query->orderBy('title');
     }

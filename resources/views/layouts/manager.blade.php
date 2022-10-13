@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@hasSection('header')
+    @section('title')
+        @yield('header')
+    @endsection
+@endif
+
 @section('menu')
     @if (Route::has('categories.index'))
         <li class="nav-item">

@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ __(':title News', ['title' => $title]) }}
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-9">
+            <div class="col-sm-8 col-md-9 col-lg-10">
                 <h3 class="mb-3">
                     {{ __(':title News', ['title' => $title]) }}
                 </h3>
@@ -20,7 +24,7 @@
                 </div>
                 {{ $posts->onEachSide(1)->links() }}
             </div>
-            <div class="col-3">
+            <div class="col-sm-4 col-md-3 col-lg-2">
                 @include('home.categories')
             </div>
         </div>

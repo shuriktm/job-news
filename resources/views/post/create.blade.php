@@ -5,6 +5,10 @@
     <li class="breadcrumb-item active" aria-current="page">{{ __('Create') }}</li>
 @endsection
 
+@section('title')
+    {{ __('Create Post') }}
+@endsection
+
 @section('header')
     {{ __('Create Post') }}
 @endsection

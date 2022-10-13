@@ -20,7 +20,7 @@ class PostSeeder extends Seeder
     {
         $categories = Category::all();
 
-        Post::factory(137)->create(function () use ($categories) {
+        Post::factory(rand(100, 200))->create(function () use ($categories) {
             return [
                 'category_id' => $categories->random(),
             ];

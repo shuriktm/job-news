@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Support\CategoryCollection;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
@@ -17,28 +19,11 @@ class PostController extends Controller
     {
         $posts = Post::manage();
 
-        if ($categoryId = request()->input('category')) {
-            $posts->where('category_id', $categoryId);
-        }
-        if ($search = request()->input('search')) {
-            $posts->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%$search%")
-                    ->orWhere('slug', 'like', "%$search%");
-            });
-        }
+        $categories = Category::manage()
+            ->withTrashed()
+            ->withWhereHas('posts');
 
-        $posts = $posts->paginate(10)
-            ->withQueryString();
-
-        $categories = Category::options()
-            ->withWhereHas('posts')
-            ->get()
-            ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
-
-        return view('post.index', [
-            'posts' => $posts,
-            'categories' => $categories,
-        ]);
+        return view('post.index', $this->prepareGridData($posts, $categories));
     }
 
     /**
@@ -51,6 +36,24 @@ class PostController extends Controller
         $posts = Post::manage()
             ->onlyTrashed();
 
+        $categories = Category::manage()
+            ->withTrashed()
+            ->withWhereHas('posts', function ($query) {
+                $query->onlyTrashed();
+            });
+
+        return view('post.archive', $this->prepareGridData($posts, $categories));
+    }
+
+    /**
+     * Prepare data to render table.
+     *
+     * @param  Builder  $posts
+     * @param  Builder  $categories
+     * @return array
+     */
+    protected function prepareGridData(Builder $posts, Builder $categories)
+    {
         if ($categoryId = request()->input('category')) {
             $posts->where('category_id', $categoryId);
         }
@@ -64,17 +67,10 @@ class PostController extends Controller
         $posts = $posts->paginate(10)
             ->withQueryString();
 
-        $categories = Category::options()
-            ->withWhereHas('posts', function ($query) {
-                $query->onlyTrashed();
-            })
-            ->get()
-            ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
+        $categories = $categories->get();
+        /* @var $categories CategoryCollection */
 
-        return view('post.archive', [
-            'posts' => $posts,
-            'categories' => $categories,
-        ]);
+        return ['posts' => $posts, 'categories' => $categories->options()];
     }
 
     /**
@@ -84,10 +80,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = Category::options()->get()
-            ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
+        $categories = Category::manage()->get();
+        /* @var $categories CategoryCollection */
 
-        return view('post.create', ['categories' => $categories]);
+        return view('post.create', ['categories' => $categories->options()]);
     }
 
     /**
@@ -124,10 +120,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $categories = Category::options()->get()
-            ->mapWithKeys(fn(Category $category) => [$category->id => $category->title]);
+        $categories = Category::manage()
+            ->withTrashed()
+            ->get();
+        /* @var $categories CategoryCollection */
 
-        return view('post.edit', ['categories' => $categories, 'post' => $post]);
+        return view('post.edit', ['categories' => $categories->options(), 'post' => $post]);
     }
 
     /**

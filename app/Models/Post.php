@@ -44,7 +44,8 @@ class Post extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class)
+            ->withTrashed();
     }
 
     /**
@@ -55,9 +56,7 @@ class Post extends Model
      */
     public function scopeManage(Builder $query)
     {
-        return $query->withWhereHas('category', function ($query) {
-            $query->whereNull('deleted_at');
-        })->orderByDesc('publish_at');
+        return $query->orderByDesc('publish_at');
     }
 
     /**
@@ -68,8 +67,10 @@ class Post extends Model
      */
     public function scopePublic(Builder $query)
     {
-        return $this->scopeManage($query)
-            ->whereDate('publish_at', '<=', $now = now())
-            ->whereTime('publish_at', '<=', $now);
+        return $query->whereDate('publish_at', '<=', $now = now())
+            ->whereTime('publish_at', '<=', $now)
+            ->withWhereHas('category', function ($query) {
+                $query->whereNull('deleted_at');
+            });
     }
 }

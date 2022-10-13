@@ -2,11 +2,15 @@
 
 @section('breadcrumbs')
     <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">{{ __('Categories') }}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ __('Archives') }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('Archive') }}</li>
+@endsection
+
+@section('title')
+    {{ __('Categories Archive') }}
 @endsection
 
 @section('header')
-    {{ __('Archives') }}
+    {{ __('Archive') }}
 @endsection
 
 @section('actions')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 
 class CategoryController extends Controller
 {
@@ -14,19 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::options();
+        $categories = Category::manage();
 
-        if ($search = request()->input('search')) {
-            $categories->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%$search%")
-                    ->orWhere('slug', 'like', "%$search%");
-            });
-        }
-
-        $categories = $categories->paginate(10)
-            ->withQueryString();
-
-        return view('category.index', ['categories' => $categories]);
+        return view('category.index', $this->prepareGridData($categories));
     }
 
     /**
@@ -36,9 +27,20 @@ class CategoryController extends Controller
      */
     public function archive()
     {
-        $categories = Category::options()
+        $categories = Category::manage()
             ->onlyTrashed();
 
+        return view('category.archive', $this->prepareGridData($categories));
+    }
+
+    /**
+     * Prepare data to render table.
+     *
+     * @param  Builder  $categories
+     * @return array
+     */
+    protected function prepareGridData(Builder $categories)
+    {
         if ($search = request()->input('search')) {
             $categories->where(function ($query) use ($search) {
                 $query->where('title', 'like', "%$search%")
@@ -46,10 +48,11 @@ class CategoryController extends Controller
             });
         }
 
-        $categories = $categories->paginate(10)
+        $categories = $categories
+            ->paginate(10)
             ->withQueryString();
 
-        return view('category.archive', ['categories' => $categories]);
+        return ['categories' => $categories];
     }
 
     /**

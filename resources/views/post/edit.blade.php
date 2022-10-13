@@ -6,6 +6,10 @@
     <li class="breadcrumb-item active" aria-current="page">{{ __('Edit') }}</li>
 @endsection
 
+@section('title')
+    {{ __('Edit Post: :title', ['title' => $post->title]) }}
+@endsection
+
 @section('header')
     {{ __('Edit Post') }}
 @endsection
